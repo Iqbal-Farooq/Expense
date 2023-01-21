@@ -1,31 +1,27 @@
 import SignUp from "./Singup/Signup";
-
+import AuthProvider from "./AUth/AuthContext";
 import ExpansesItem from "./Expenses/ExpenseItem";
-
 import { AuthContext } from "./AUth/AuthContext";
 import { useContext, useEffect } from "react";
-import { Route,} from "react-router";
-
-
+import { Route, Routes } from "react-router";
+import { Redirect } from "react-router";
 
 function App() {
   const ctx=useContext(AuthContext)
- 
-  return ( 
-    <>
- 
-          {ctx.isLogin &&<Route path="/"> <ExpansesItem /></Route>}
-  
-   
-                      {!ctx.isLogin && <SignUp />} 
-       
-      
-  
-     
-   
-    </>
-   
+  useEffect(()=>{
     
+
+  },[ctx])
+  return (
+    <AuthProvider>
+    <Routes >
+   <Route path='./Expenses/ExpenseItem' exact>  <ExpansesItem /></Route>
+
+   </Routes>
+       {/* {!ctx.isLogin && <SignUp />}
+    <ExpansesItem /> */}
+   
+    </AuthProvider>
    
   )
 }

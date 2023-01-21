@@ -3,12 +3,10 @@ import React from 'react'
 import { useState,useContext} from 'react'
 
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import {Col,Row,Form,Card,Container,Button} from 'react-bootstrap'
 
 import { AuthContext } from '../AUth/AuthContext'
-
-
 
 
 
@@ -22,7 +20,7 @@ const SignUp=()=>{
       const ctx=useContext(AuthContext);
     
     
-    const history=useHistory();
+    const navigate=useNavigate();
 
 
    
@@ -98,7 +96,7 @@ const SignUp=()=>{
                    },
             }).then(res=>{
                 if(res.ok){
-                    
+                     navigate('../Expenses/expenseItem');
                    
                     return res.json();
                 }
@@ -111,13 +109,12 @@ const SignUp=()=>{
 
 
                 ctx.Login(data.idToken);
-                 history.replace('./Expense');
                  
 
                 console.log(data.idToken)
 
 
-            // alert("Login SuccessFully")
+            alert("Login SuccessFully")
         });
 
         }
