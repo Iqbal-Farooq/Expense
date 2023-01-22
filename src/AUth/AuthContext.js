@@ -5,11 +5,14 @@ export const AuthContext=React.createContext({
     Login:(token)=>{},
     Logout:()=>{},
     tokenid:'',
+    profileDetails:'',
+     profile:'',
 })
 
 const AuthProvider=(props)=>{
    const initialtoken= localStorage.getItem('token')
     const [Token,SetToken]=useState(initialtoken);
+    const[Profile,setProfile]=useState([]);
 
     const UserIslogedIn=!!Token;
 
@@ -25,6 +28,11 @@ const AuthProvider=(props)=>{
         SetToken(null);
         
     }
+    const ProfileHandler=(data)=>{
+        console.log("profileHAndler",data)
+        setProfile(data)
+        
+    }
 
 
 
@@ -33,7 +41,9 @@ const AuthProvider=(props)=>{
         isLogin:UserIslogedIn,
         Login:LoginHandler,
         Logout:LogOutHandler,
-        tokenid:Token, 
+        tokenid:Token,
+        profileDetails:ProfileHandler, 
+        profile:Profile,
 
 
     }

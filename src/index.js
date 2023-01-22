@@ -6,10 +6,11 @@ import "../node_modules/bootstrap/dist/css/bootstrap.css"
 
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import AuthProvider from './AUth/AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-<<<<<<< HEAD
-root.render(<AuthProvider>
+root.render(
+<AuthProvider>
   
   <BrowserRouter>
   
@@ -19,12 +20,6 @@ root.render(<AuthProvider>
   </BrowserRouter>
    </AuthProvider>
    
-=======
-root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
->>>>>>> 4627d7572da091811ab57bf1419d8de852adb720
 );
 
 
