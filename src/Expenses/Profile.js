@@ -39,8 +39,9 @@ const Profile=()=>{
                 }
             }).then(data=>{console.log(data.users)
                 SetProfile(data.users[0].displayName);
-                SetPhotoUrl(data.users[0].photoUrl
-);
+                SetPhotoUrl(data.users[0].photoUrl);
+                console.log(data.users[0].displayName)
+                console.log(data.users[0].photoUrl)
            }).catch(err=>console.log(err));
     },[])
   

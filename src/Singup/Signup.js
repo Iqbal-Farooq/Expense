@@ -3,10 +3,12 @@ import React from 'react'
 import { useState,useContext} from 'react'
 
 
-import { useHistory } from 'react-router-dom';
+import { useHistory,NavLink,Redirect } from 'react-router-dom';
+import Forgot from './Forgot';
 import {Col,Row,Form,Card,Container,Button} from 'react-bootstrap'
 
 import { AuthContext } from '../AUth/AuthContext'
+
 
 
 
@@ -18,14 +20,21 @@ const SignUp=()=>{
     const[Confirm,SetConfirm]=useState();
     const[isLogin,SetISLogin]=useState(true);
     
+    
       const [formIsValid, setFormIsValid] = useState(false);
       const ctx=useContext(AuthContext);
     
     
     const history=useHistory();
+         const Forgot=(e)=>{
+            e.preventDefault();
+            
+       history.replace('./Forgot');
+        // <Redirect to='/Forgot' />
 
 
-   
+
+    }
 
 
       const ValidatePassword=(password,Confirmpassword)=>{
@@ -122,6 +131,7 @@ const SignUp=()=>{
 
         }
     }
+   
 
   
     return(
@@ -136,22 +146,31 @@ const SignUp=()=>{
                     <Card.Body className="p-5" style={{backgroundColor:"#f7f5f0"}}>
                     <Form>
 
+                   
+
                         <Form.Group   className="mb-3">
                             <Form.Control size="lg" type="email" placeholder="email" name="email" onChange={EmailInput}  ></Form.Control>
                             </Form.Group>
-                         <Form.Group className="mb-3">
+                        { <Form.Group className="mb-3">
                             <Form.Control size="lg" type="password" placeholder="Password" name="password" onChange={PasswordInput} ></Form.Control>
-                        </Form.Group>
-                       {isLogin &&<Form.Group className="mb-3">
+                        </Form.Group>}
+                       {isLogin &&  <Form.Group className="mb-3">
                             <Form.Control size="lg" type="password" placeholder="Password" name="password" onChange={updatePasswordInput}  ></Form.Control>
                         </Form.Group>}
+                          {!isLogin && <Card.Body className="mt-3">
+                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px"}}><span onClick={Forgot}> Forgot password ?</span></p>
+                  
+                </Card.Body>}
+                 {/* <div> {!isLogin && <NavLink 
+           style={{textDecoration:"none" ,color:'brown'}}   to="/Forgot"  > Forgot password?  </NavLink> }
+          </div> */}
                         <Form.Group className="mb-1">
                         <Container  style={{textAlign:"center"}}>
-                         <Button  size='lg' variant="success"  type="submit" className='' style={{borderRadius:"40px"}} onClick={Submit} disabled={!formIsValid}>{isLogin?'Signup':'Login'}</Button>
+                         <Button  size='lg' variant="success"  type="submit"  style={{borderRadius:"40px"}} onClick={Submit} disabled={!formIsValid}>{isLogin?'Signup':'Login'}</Button>
                           </Container>
 
                         </Form.Group>
-                       {!isLogin &&<p  style={{textAlign:"center"}}>Forgot Password</p>}
+                      
                     </Form>
                     </Card.Body>
                 </Card>
