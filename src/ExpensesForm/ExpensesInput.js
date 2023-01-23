@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import{Row,Col,Form,Card,Button,Container} from 'react-bootstrap'
+import axios from 'axios';
 
 
 const ExpenseForm = (props) => {
@@ -8,6 +9,18 @@ const [enteredExpense,setEnteredExpense]=  useState('')
 const [enteredDetails,setEnteredDetails] = useState('')
 const [enteredCategory,setEnteredCategory] = useState('')
 const [enteredData,setEnteredData]=useState([]);
+
+useEffect(()=>{
+  async function GetDate(){
+    let res=await axios.get('https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems.json');
+    const data = await Object.values(res.data);
+    console.log(res);
+    // setEnteredData(data);
+  
+  }
+  GetDate()
+},[])
+
 
 
 const expenseHandler  =(event) =>{
@@ -25,7 +38,7 @@ const categoryHandler =(event)=>{
 
     setEnteredCategory(event.target.value)  
 }
-const SubmitHandler = (event) =>{
+async function SubmitHandler (event){
 event.preventDefault()
 
 const obj = {
@@ -33,7 +46,9 @@ const obj = {
     enteredDetails,
     enteredCategory
 }
-
+let res=await axios.post('https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems.json',obj);
+let data=await res.data;
+console.log(data);
 
 setEnteredData((prevexpense)=>{
   return [...prevexpense,obj]
@@ -41,8 +56,7 @@ setEnteredData((prevexpense)=>{
 
 
 }
-
-  return (
+return (
     <>
      <Row style={{margin:"2% 0  0  3%"}}>
             <Col md={6}>
