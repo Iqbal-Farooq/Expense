@@ -3,6 +3,7 @@ import AuthProvider from "./AUth/AuthContext";
 import ExpansesItem from "./Expenses/ExpenseItem";
 import Profile from "./Expenses/Profile";
 import Forgot from "./Singup/Forgot";
+import ExpenseForm from "./ExpensesForm/ExpensesInput";
 
 
 import { AuthContext } from "./AUth/AuthContext";
@@ -35,7 +36,9 @@ function App() {
                     
                      <Route path="/Expenses/Profile" exact ><Profile /></Route> 
                     <Route path='/Forgot' exact><Forgot /> </Route>
+                    <Route path="/ExpensesForm/ExpensesInput"><ExpenseForm /></Route>
                       <Route path="/"><SignUp exact/></Route>
+                      
                     
   
     </Switch>

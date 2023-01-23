@@ -104,7 +104,7 @@ const Profile=()=>{
           </div>
        </div>
         
-          <div className="btn"><button className="btnClr"  onClick={SendData} >update</button></div>
+          <div style={{ marginLeft: "260px", marginTop:"40px" }}><button className="btnClr"  onClick={SendData} >update</button></div>
           <hr className="Line"/>
 
 

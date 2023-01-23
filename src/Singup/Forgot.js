@@ -1,10 +1,11 @@
-import { useRef} from 'react'
+import { useRef,useState} from 'react'
 
 
 import { useHistory } from 'react-router-dom';
 import {Col,Row,Form,Card,Container,Button} from 'react-bootstrap'
 
 const Forgot=()=>{
+    const[isLoader,setIsLoader]=useState(false);
     const EmailRef=useRef();
     const history=useHistory();
 
@@ -15,7 +16,9 @@ const Forgot=()=>{
 
     }
     const PasswordHandler=(e)=>{
+
         e.preventDefault();
+        setIsLoader(true)
         const Email=EmailRef.current.value;
 
         fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCy1k8wKuulQHvLB7Ig4fSSsWQ3GJa7q8Y",{
@@ -27,13 +30,16 @@ const Forgot=()=>{
     'Content-Type': "application/json"
 },}).then(res=>{
     if(res.ok){
+        setIsLoader(false)
         return res.json()
     }else{
+        setIsLoader(false)
         return res.json().then(data=>{console.log(data) 
             alert(data.error.message)})
     }
 
-}).then(data=>{console.log(data)
+}).then(data=>{
+console.log(data)
 alert("Sent Successfully")}).catch(err=>{console.log(err)})
     }
 
@@ -56,6 +62,7 @@ alert("Sent Successfully")}).catch(err=>{console.log(err)})
                         <Form.Label>Enter the Registered Email</Form.Label>
                             <Form.Control size="lg" type="email" placeholder="email" name="email" ref={EmailRef}  ></Form.Control>
                             </Form.Group>
+                            {isLoader && <p style={{textAlign:"center"}}>Loading...</p>}
                        
                     
                         <Form.Group className="mb-1">

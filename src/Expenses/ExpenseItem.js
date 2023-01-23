@@ -4,6 +4,7 @@ import { useState,useRef,useContext,useEffect } from "react";
 import { Container, Navbar } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../AUth/AuthContext";
+import ExpenseForm from "../ExpensesForm/ExpensesInput";
 
 
 
@@ -54,6 +55,7 @@ const ExpansesItem=()=>{
     
    </Navbar>
     <hr />
+    <ExpenseForm />
 
     </>)
 }
