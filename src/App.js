@@ -1,47 +1,63 @@
 import SignUp from "./Singup/Signup";
-import AuthProvider from "./AUth/AuthContext";
+
 import ExpansesItem from "./Expenses/ExpenseItem";
 import Profile from "./Expenses/Profile";
 import Forgot from "./Singup/Forgot";
 import ExpenseForm from "./ExpensesForm/ExpensesInput";
 
 
-import { AuthContext } from "./AUth/AuthContext";
+// import { AuthContext } from "./AUth/AuthContext";
 import { useContext,} from "react";
-import { useHistory } from "react-router-dom";
-import { Route,Redirect,Switch} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Route,Redirect,Routes} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "./AUth/AuthContext";
 
-import { Navbar, NavLink, } from "react-bootstrap";
+import { Navbar, NavLink,Nav,Container } from "react-bootstrap";
 
 
 
 function App() {
-  const ctx=useContext(AuthContext)
-  const history=useHistory();
+  // const ctx=useContext(AuthContext)
+  const history=useNavigate();
+  const dispatch=useDispatch();
+  const Logout=useSelector(state=>state.auth);
 
   const Logut=()=>{
-    ctx.Logout();
-    history.replace("./")
+    // ctx.Logout();
+    dispatch(authActions.logout())
+   
+     history("/");
 
   }
  
   return ( 
     <>
-    <Navbar> {ctx.isLogin && <NavLink  to='#'><button onClick={Logut}> Logout</button> </NavLink>}</Navbar>
-    <Switch>
- 
-                            
-                      {ctx.isLogin && <Route path="/Expenses/ExpenseItem"><ExpansesItem /></Route>}
-                    
-                    
-                     <Route path="/Expenses/Profile" exact ><Profile /></Route> 
-                    <Route path='/Forgot' exact><Forgot /> </Route>
-                    <Route path="/ExpensesForm/ExpensesInput"><ExpenseForm /></Route>
-                      <Route path="/"><SignUp exact/></Route>
-                      
-                    
+    <Navbar bg="dark" variant="dark">
+        <Container>
+          <Nav className="me-auto">
+          
+             <Navbar > { <NavLink  to='#'><button onClick={Logut}> Logout</button> </NavLink>} </Navbar>
+            
+          </Nav>
+        </Container>
+      </Navbar>
+   
+    
+    <Routes>
   
-    </Switch>
+
+                      { <Route path="/ExpenseItem" element={<ExpansesItem />}></Route>}
+                     
+                      <Route path="ExpenseItem/:Profile"  element={<Profile />} ></Route> 
+                    <Route path='/Forgot' exact  element={<Forgot />}> </Route>
+                    <Route path="/ExpensesInput" element={<ExpenseForm />}></Route>
+                     { <Route path="/" exact element={<SignUp />}></Route> }
+                     
+</Routes>
+  
+
+    
  </>
   )
 }

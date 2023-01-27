@@ -1,10 +1,11 @@
 import React from "react";
 import './Expenses.css'
 import { useState,useRef,useContext,useEffect } from "react";
-import { Container, Navbar } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import { AuthContext } from "../AUth/AuthContext";
+import { Container, Navbar,Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+// import { AuthContext } from "../AUth/AuthContext";
 import ExpenseForm from "../ExpensesForm/ExpensesInput";
+import { useSelector } from "react-redux";
 
 
 
@@ -13,12 +14,14 @@ import ExpenseForm from "../ExpensesForm/ExpensesInput";
 
 const ExpansesItem=()=>{
     
-    const history=useHistory();
-    const ctx=useContext(AuthContext);
+    const history=useNavigate();
+    // const ctx=useContext(AuthContext);
+        const tokenid=useSelector(state=>state.auth.token);
   
 
-    const ChangeEventHAndler=()=>{
-        history.replace('./Profile');
+    const ChangeEventHAndler=(e)=>{
+        e.preventDefault();
+        history('./Profile');
 
     }
 
@@ -27,7 +30,7 @@ const ExpansesItem=()=>{
             method:"POST",
             body:JSON.stringify({
                 requestType:"VERIFY_EMAIL",
-                idToken:ctx.tokenid,
+                idToken:tokenid,
             }),headers:{
     'Content-Type': "application/json"
 },
@@ -50,7 +53,7 @@ const ExpansesItem=()=>{
     return(<> 
     <Navbar className="top">
    {<p >Welcome to Expense Tracker !!!</p>}
-   <button onClick={Verify} >Verify-Email</button>
+   <Button onClick={Verify}  variant='success' size="sm">Verify-Email</Button>
     {<p className="top1"> your profile is incomplete <span className="top11" onClick={ChangeEventHAndler}> Complete now</span></p>}
     
    </Navbar>

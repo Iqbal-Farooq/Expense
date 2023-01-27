@@ -1,19 +1,22 @@
 import { useRef,useContext,useEffect,useState} from "react";
 import { AuthContext, } from "../AUth/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Navbar } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const Profile=()=>{
     const [Profile,SetProfile]=useState(null);
      const [Photourl,SetPhotoUrl]=useState(null);
       const NameRef=useRef();
     const UrlRef=useRef();
-    const ctx=useContext(AuthContext);
-    const history=useHistory();
+    // const ctx=useContext(AuthContext);
+    const tokenid=useSelector(state=>state.auth.token);
+    console.log("Inside profile",tokenid);
+    const history=useNavigate();
   
 
     const ChangeEventHAndler=()=>{
-        history.replace('./ExpenseItem');
+        history('/ExpenseItem');
 
       
 
@@ -25,7 +28,7 @@ const Profile=()=>{
         fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCy1k8wKuulQHvLB7Ig4fSSsWQ3GJa7q8Y',{
             method:"POST",
             body:JSON.stringify({
-                idToken:ctx.tokenid}),
+                idToken:tokenid } ),
                 headers:{
     'Content-Type': "application/json"
 },
@@ -50,13 +53,13 @@ const Profile=()=>{
     const SendData=(e)=>{
         e.preventDefault();
         console.log(NameRef.current.value);
-        console.log(UrlRef.current.value,ctx.tokenid)
+        console.log(UrlRef.current.value,)
         const name=NameRef.current.value;
         const Url=UrlRef.current.value;
         fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCy1k8wKuulQHvLB7Ig4fSSsWQ3GJa7q8Y',{
             method:"POST",
             body:JSON.stringify({
-                idToken:ctx.tokenid,
+                idToken:tokenid,
                 displayName:name,
                 photoUrl:Url,
                 returnSecureToken:true,

@@ -1,17 +1,17 @@
 import { useRef,useState} from 'react'
 
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {Col,Row,Form,Card,Container,Button} from 'react-bootstrap'
 
 const Forgot=()=>{
     const[isLoader,setIsLoader]=useState(false);
     const EmailRef=useRef();
-    const history=useHistory();
+    const history=useNavigate();
 
     const Signup=(e)=>{
         e.preventDefault();
-        history.replace("/");
+        history("/");
 
 
     }
@@ -76,7 +76,7 @@ alert("Sent Successfully")}).catch(err=>{console.log(err)})
                     </Card.Body>
                 </Card>
                 <Card.Body className="mt-3">
-                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px"}}>have an account ? <span onClick={Signup} >Login</span></p>
+                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px",}}>have an account ? <span style={{cursor:"pointer",color:"blue"}} onClick={Signup} >Login</span></p>
                   
                 </Card.Body>
 

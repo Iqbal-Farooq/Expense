@@ -1,16 +1,30 @@
 import { useState,useEffect, useRef } from 'react';
+import axios from 'axios';
 
 import{Row,Col,Form,Card,Button,Container} from 'react-bootstrap'
-import axios from 'axios';
+import { expenseActions } from '../AUth/AuthContext';
+import { useDispatch,useSelector } from 'react-redux';
+
 
 
 const ExpenseForm = (props) => {
   // const [length,Setlength]=useState(false);
 const [enteredData,setEnteredData]=useState([]);
+const[render,setRender]=useState(false);
+// if(Object.values(Expensedata.expenses).length>0){
+//   setRender(true)
+// }else{
+//   setRender(false)
+// }
 
+
+const formatedEmail=localStorage.getItem('email').replace(".", "").replace("@", "");
 const  ExpenseAmount=useRef();
 const   ExpenseDisc=useRef();
 const  ExpenseCat=useRef();
+
+const Expensedata=useSelector(state=>state.expense)
+const dispatch=useDispatch();
 // if(enteredData.length>0){
 //   Setlength(true)
 //   console.log(enteredData.length)
@@ -18,13 +32,15 @@ const  ExpenseCat=useRef();
 
 
   async function GetDate(){
-    let res=await axios.get('https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems.json');
+    let res=await axios.get(`https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems${formatedEmail}.json`);
     
     const data= await res.data;
 
     console.log("INSIDE useuEFFEct",data);
    
-     setEnteredData(data);
+    //  setEnteredData(data);
+
+     dispatch(expenseActions.onAddOrGetExpense(data))
       
   
   }
@@ -57,7 +73,7 @@ const obj = {
 
   // }else{
     
-let res=await axios.post('https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems.json',obj);
+let res=await axios.post(`https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems${formatedEmail}.json`,obj);
 let data=await res.data;
 console.log("DATA FINDING",data)
 
@@ -77,7 +93,7 @@ console.log("DATA FINDING",data)
 
 async function onExpenseDeleteClickHandler(id){
 
-  const res=await axios.delete(`https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems/${id}.json`);
+  const res=await axios.delete(`https://expense-tracker-e38a4-default-rtdb.firebaseio.com/expenseItems${formatedEmail}/${id}.json`);
   const data= await res.data;
   console.log("SuccessFully");
    GetDate();
@@ -85,15 +101,26 @@ async function onExpenseDeleteClickHandler(id){
 }
  const onEditExpenseClickHandler = (expenseId) => {
 
-    ExpenseAmount.current.value = enteredData[expenseId].amount;
-    ExpenseDisc.current.value = enteredData[expenseId].disc;
-    ExpenseCat.current.value = enteredData[expenseId].cate;
+    ExpenseAmount.current.value = Expensedata.expenses[expenseId].amount;
+    ExpenseDisc.current.value = Expensedata.expenses[expenseId].disc;
+    ExpenseCat.current.value = Expensedata.expenses[expenseId].cate;
 
   //  SubmitHandler(expenseId);
 
     onExpenseDeleteClickHandler(expenseId);
     GetDate();
   }
+  
+      let sumOfExpense = 0;
+
+        // Object.values(Expensedata.expenses).forEach((item) => {
+        //   sumOfExpense += Number(item.amount);
+        // });
+        console.log(sumOfExpense)
+
+  
+   
+        
 
 return (
     <>
@@ -147,20 +174,25 @@ return (
         </Row>
         <div style={{marginTop:"30px"}}>  
 
-       { Object.keys(enteredData).map((key)=>{ 
+       {/* { render && Object.keys(Expensedata.expenses).length>0 && Object.keys(Expensedata.expenses).map((key)=>{ 
         return  <div style={{marginTop:"15px"} }><li key={key}>
-         <span style={{margin:"1px 3px 1px 1px",}}>{enteredData[key].amount}</span>
-            <span style={{margin:"1px 3px 1px 10px"}}>{enteredData[key].disc}</span> 
-            <span style={{margin:"1px 10px 1px 10px"}}>{enteredData[key].cate}</span>
+         <span style={{margin:"1px 3px 1px 1px",}}>{Expensedata.expenses[key].amount}</span>
+            <span style={{margin:"1px 3px 1px 10px"}}>{Expensedata.expenses[key].disc}</span> 
+            <span style={{margin:"1px 10px 1px 10px"}}>{Expensedata.expenses[key].cate}</span>
              <span style={{margin:"6px 15px 1px 1px"}}> <Button size='sm' variant='success' onClick={()=>{onEditExpenseClickHandler(key)}}>Edit</Button></span>
             <span style={{margin:"6px 10px 1px 1px"}}><Button size='sm' variant='danger' onClick={()=>{onExpenseDeleteClickHandler(key)}}>Delete</Button> </span>
+
              </li>
+            
+            
             </div>
            
          
-            })
-        } 
-         {console.log(Object.values(enteredData))}
+            }) 
+        }  */}
+         {console.log((Expensedata))}
+          {sumOfExpense>=1000 ?<span style={{color:"blue"}}>premium</span>:''}
+    
  
          </div>
     </>

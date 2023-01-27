@@ -1,13 +1,17 @@
 import React from 'react'
 
 import { useState,useContext} from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../AUth/AuthContext';
 
 
-import { useHistory,NavLink,Redirect } from 'react-router-dom';
+import { useNavigate,NavLink,Redirect } from 'react-router-dom';
 import Forgot from './Forgot';
 import {Col,Row,Form,Card,Container,Button} from 'react-bootstrap'
 
-import { AuthContext } from '../AUth/AuthContext'
+// import { AuthContext } from '../AUth/AuthContext'
+
+
 
 
 
@@ -19,17 +23,20 @@ const SignUp=()=>{
     const [password,setPassword]=useState();
     const[Confirm,SetConfirm]=useState();
     const[isLogin,SetISLogin]=useState(true);
+
+    const dispatch=useDispatch();
+    const isAuth=useSelector(state=>state.auth)
     
     
       const [formIsValid, setFormIsValid] = useState(false);
-      const ctx=useContext(AuthContext);
+    //   const ctx=useContext(AuthContext);
     
     
-    const history=useHistory();
+    const history=useNavigate();
          const Forgot=(e)=>{
             e.preventDefault();
             
-       history.replace('./Forgot');
+       history('./Forgot');
         // <Redirect to='/Forgot' />
 
 
@@ -119,8 +126,12 @@ const SignUp=()=>{
             }).then(data=>{
 
 
-                ctx.Login(data.idToken);
-                 history.replace('/Expenses/ExpenseItem');
+                // ctx.Login(data.idToken);
+                localStorage.setItem('email',email)
+
+                dispatch(authActions.login(data.idToken))
+
+                 history('/ExpenseItem');
                  
 
                 console.log(data.idToken)
@@ -158,7 +169,7 @@ const SignUp=()=>{
                             <Form.Control size="lg" type="password" placeholder="Password" name="password" onChange={updatePasswordInput}  ></Form.Control>
                         </Form.Group>}
                           {!isLogin && <Card.Body className="mt-3">
-                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px"}}><span onClick={Forgot}> Forgot password ?</span></p>
+                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px"}}><span style={{cursor:"pointer",color:"blue"}} onClick={Forgot}> Forgot password ?</span></p>
                   
                 </Card.Body>}
                  {/* <div> {!isLogin && <NavLink 
@@ -166,7 +177,7 @@ const SignUp=()=>{
           </div> */}
                         <Form.Group className="mb-1">
                         <Container  style={{textAlign:"center"}}>
-                         <Button  size='lg' variant="success"  type="submit"  style={{borderRadius:"40px"}} onClick={Submit} disabled={!formIsValid}>{isLogin?'Signup':'Login'}</Button>
+                         <Button  size='lg' variant="success"  type="submit"  style={{borderRadius:"40px",cursor:"pointer"}} onClick={Submit} disabled={!formIsValid}>{isLogin?'Signup':'Login'}</Button>
                           </Container>
 
                         </Form.Group>
@@ -175,7 +186,7 @@ const SignUp=()=>{
                     </Card.Body>
                 </Card>
                 <Card.Body className="mt-3">
-                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px"}}>have an account ? <span onClick={SwitchHandler}>{isLogin?'Login':'Signup'}</span></p>
+                    <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px",}}>have an account ? <span style={{cursor:"pointer",color:"blue"}} onClick={SwitchHandler}>{isLogin?'Login':'Signup'}</span></p>
                   
                 </Card.Body>
 
