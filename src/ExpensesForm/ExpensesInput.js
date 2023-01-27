@@ -2,8 +2,10 @@ import { useState,useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import{Row,Col,Form,Card,Button,Container} from 'react-bootstrap'
-import { expenseActions } from '../AUth/AuthContext';
+import { expenseActions,themeAction } from '../AUth/AuthContext';
 import { useDispatch,useSelector } from 'react-redux';
+// import { CSVLink } from "react-csv";
+import { saveAs } from "file-saver";
 
 
 
@@ -25,6 +27,8 @@ const  ExpenseCat=useRef();
 
 const Expensedata=useSelector(state=>state.expense)
 const dispatch=useDispatch();
+const currentTheme=useSelector(state=>state.theme);
+console.log("theme",currentTheme);
 // if(enteredData.length>0){
 //   Setlength(true)
 //   console.log(enteredData.length)
@@ -113,10 +117,30 @@ async function onExpenseDeleteClickHandler(id){
   
       let sumOfExpense = 0;
 
-        // Object.values(Expensedata.expenses).forEach((item) => {
-        //   sumOfExpense += Number(item.amount);
-        // });
+        Object.values(Expensedata.expenses).forEach((item) => {
+          sumOfExpense += Number(item.amount);
+        });
         console.log(sumOfExpense)
+
+
+        const downloading=()=>{
+         const csv = Object.keys(Expensedata.expenses).map((expense) => {
+      // return ["Col1", "Col2", "Col3"]
+      console.log(expense[1].amount);
+      return [expense[1].amount, expense[1].description, expense[1].category];
+    });
+
+    console.log(csv);
+    const makeCSV = (rows) => {
+      return rows.map((r) => r.join(",")).join("\n");
+    };
+
+    const blob1 = new Blob([makeCSV(csv)]);
+
+
+    const temp = URL.createObjectURL(blob1)
+    saveAs(temp, "file1.txt")
+        }
 
   
    
@@ -172,9 +196,9 @@ return (
          </Col>
 
         </Row>
-        <div style={{marginTop:"30px"}}>  
+        <div style={{marginTop:"30px",backgroundColor: currentTheme.darkMode? "grey" : null}}>  
 
-       {/* { render && Object.keys(Expensedata.expenses).length>0 && Object.keys(Expensedata.expenses).map((key)=>{ 
+       {   Object.keys(Expensedata.expenses).map((key)=>{ 
         return  <div style={{marginTop:"15px"} }><li key={key}>
          <span style={{margin:"1px 3px 1px 1px",}}>{Expensedata.expenses[key].amount}</span>
             <span style={{margin:"1px 3px 1px 10px"}}>{Expensedata.expenses[key].disc}</span> 
@@ -189,9 +213,11 @@ return (
            
          
             }) 
-        }  */}
-         {console.log((Expensedata))}
-          {sumOfExpense>=1000 ?<span style={{color:"blue"}}>premium</span>:''}
+        } 
+         {console.log((Expensedata.expenses))}
+          {sumOfExpense>=1000 ?<span onClick={()=>dispatch(themeAction.changeTheme())} style={{color:"blue"}}>Active premium</span>:''}
+          <button onClick={downloading}>Download</button>
+
     
  
          </div>

@@ -171,10 +171,56 @@ const expenseSlice = createSlice({
   },
 });
 
+// const initialThemeState = {
+//   darkTheme: false,
+// };
+// const ThemeSlice=createSlice({
+//     name:"theme",
+//     initialState:initialThemeState,
+//     reducers:{
+//          onThemeChange(state) {
+//         console.log(`inside onThemeChange`)
+//       state.darkTheme = !state.darkTheme;
+//     },
+//     }
+// })
+
+
+const initialThemeState={
+
+  darkMode:false,
+  premium:false,
+  cvandDark:false,
+
+}
+const ThemeSlice = createSlice({
+  name:'theme',
+  initialState:initialThemeState,
+  reducers:{
+    changeTheme(state,action){
+      //state.darkMode = 'light'
+      state.darkMode=!state.darkMode;
+
+    },
+    activePremium(state,action){
+       state.premium=action.payload;
+    },
+    cvDarkMode(state,action){
+      state.cvandDark=action.payload;
+    }
+  }
+})
+
 const store = configureStore({
-  reducer: { auth: authSlice.reducer, expense: expenseSlice.reducer },
+  reducer: {
+     auth: authSlice.reducer,
+      expense: expenseSlice.reducer,
+      theme:ThemeSlice.reducer,
+      
+     },
 });
 
 export const authActions = authSlice.actions;
 export const expenseActions = expenseSlice.actions;
+export const themeAction=ThemeSlice.actions;
 export default store;
