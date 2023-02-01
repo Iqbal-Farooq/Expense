@@ -1,11 +1,11 @@
 import React from "react";
 import './Expenses.css'
 import { useState,useRef,useContext,useEffect } from "react";
-import { Container, Navbar,Button } from "react-bootstrap";
+import { Container, Navbar,Button,Nav,NavItem } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-// import { AuthContext } from "../AUth/AuthContext";
 import ExpenseForm from "../ExpensesForm/ExpensesInput";
 import { useSelector } from "react-redux";
+import LOgout from "../Singup/Logout";
 
 
 
@@ -51,13 +51,21 @@ const ExpansesItem=()=>{
     
 
     return(<> 
-    <Navbar className="top">
-   {<p >Welcome to Expense Tracker !!!</p>}
-   <Button onClick={Verify}  variant='success' size="sm">Verify-Email</Button>
-    {<p className="top1"> your profile is incomplete <span className="top11" onClick={ChangeEventHAndler}> Complete now</span></p>}
-    
-   </Navbar>
-    <hr />
+     <Navbar bg="dark" variant="dark">
+        <Container className="nav">
+      
+           <li style={{color:"white"}}>Welcome to Expense Tracker !!!</li>
+            <li > <Button onClick={Verify}  variant='success' size="sm">Verify-Email</Button></li>
+            <li> <LOgout /></li>
+            <li style={{color:"white"}}>{<p className="top1"> your profile is incomplete ? <span className="top11" onClick={ChangeEventHAndler}> Complete now</span></p>}</li>
+          
+        
+          
+        </Container>
+      </Navbar>
+   
+   
+    {/* <hr /> */}
     <ExpenseForm />
 
     </>)

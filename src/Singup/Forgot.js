@@ -31,7 +31,9 @@ const Forgot=()=>{
 },}).then(res=>{
     if(res.ok){
         setIsLoader(false)
+          alert("Sent Successfully")
         return res.json()
+      
     }else{
         setIsLoader(false)
         return res.json().then(data=>{console.log(data) 
@@ -40,7 +42,7 @@ const Forgot=()=>{
 
 }).then(data=>{
 console.log(data)
-alert("Sent Successfully")}).catch(err=>{console.log(err)})
+}).catch(err=>{console.log(err)})
     }
 
     

@@ -1,12 +1,6 @@
-import SignUp from "./Singup/Signup";
 
-import ExpansesItem from "./Expenses/ExpenseItem";
-import Profile from "./Expenses/Profile";
-import Forgot from "./Singup/Forgot";
-import ExpenseForm from "./ExpensesForm/ExpensesInput";
+import React,{Suspense} from "react";
 
-
-// import { AuthContext } from "./AUth/AuthContext";
 import { useContext,} from "react";
 import { useNavigate } from "react-router-dom";
 import { Route,Redirect,Routes} from "react-router-dom";
@@ -16,48 +10,39 @@ import { authActions } from "./AUth/AuthContext";
 import { Navbar, NavLink,Nav,Container } from "react-bootstrap";
 
 
+const SignUp=React.lazy(()=>import("./Singup/Signup"));
+const ExpansesItem=React.lazy(()=>import("./Expenses/ExpenseItem"));
+const Profile=React.lazy(()=>import("./Expenses/Profile"));
+const Forgot=React.lazy(()=>import("./Singup/Forgot"));
+const ExpenseForm=React.lazy(()=>import("./ExpensesForm/ExpensesInput"))
+
+
 
 function App() {
-  // const ctx=useContext(AuthContext)
+  
   const history=useNavigate();
   const dispatch=useDispatch();
   const Logout=useSelector(state=>state.auth);
+  const IsLoggedIn=useSelector(state=>state.auth.isLoggedin);
+  console.log("LOGGED ",IsLoggedIn);
 
-  const Logut=()=>{
-    // ctx.Logout();
-    dispatch(authActions.logout())
-   
-     history("/");
-
-  }
  
   return ( 
     <>
-    <Navbar bg="dark" variant="dark">
-        <Container>
-          <Nav className="me-auto">
-          
-             <Navbar > { <NavLink  to='#'><button onClick={Logut}> Logout</button> </NavLink>} </Navbar>
-            
-          </Nav>
-        </Container>
-      </Navbar>
-   
+     <Suspense fallback={<h1 style={{textAlign:"Center",fontWeight:"bold",margin:"30%"}}>Loading... 🚗 </h1>} >
     
     <Routes>
-  
 
                       { <Route path="/ExpenseItem" element={<ExpansesItem />}></Route>}
-                     
+
                       <Route path="ExpenseItem/:Profile"  element={<Profile />} ></Route> 
                     <Route path='/Forgot' exact  element={<Forgot />}> </Route>
                     <Route path="/ExpensesInput" element={<ExpenseForm />}></Route>
                      { <Route path="/" exact element={<SignUp />}></Route> }
-                     
-</Routes>
-  
 
-    
+</Routes>
+</Suspense>
+
  </>
   )
 }

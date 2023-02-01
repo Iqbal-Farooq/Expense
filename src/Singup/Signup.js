@@ -26,21 +26,14 @@ const SignUp=()=>{
 
     const dispatch=useDispatch();
     const isAuth=useSelector(state=>state.auth)
-    
-    
+
       const [formIsValid, setFormIsValid] = useState(false);
-    //   const ctx=useContext(AuthContext);
-    
-    
+
     const history=useNavigate();
          const Forgot=(e)=>{
-            e.preventDefault();
-            
+
        history('./Forgot');
-        // <Redirect to='/Forgot' />
-
-
-
+  
     }
 
 
@@ -94,7 +87,11 @@ const SignUp=()=>{
                    },
             }).then(res=>{ if(res.ok){
                      alert("Success")
-                      console.log('success-fully registered')
+                      console.log('success-fully registered');
+                      setPassword('');
+                      SetEmail('');
+                      SetConfirm('');
+                    
              } else{
                  return res.json().then(data=>{
                     alert(data.error.message)
@@ -160,21 +157,19 @@ const SignUp=()=>{
                    
 
                         <Form.Group   className="mb-3">
-                            <Form.Control size="lg" type="email" placeholder="email" name="email" onChange={EmailInput}  ></Form.Control>
+                            <Form.Control size="lg" type="email" placeholder="email" name="email" value={email} onChange={EmailInput}  ></Form.Control>
                             </Form.Group>
                         { <Form.Group className="mb-3">
-                            <Form.Control size="lg" type="password" placeholder="Password" name="password" onChange={PasswordInput} ></Form.Control>
+                            <Form.Control size="lg" type="password" placeholder="Password" name="password"  value={password} onChange={PasswordInput} ></Form.Control>
                         </Form.Group>}
                        {isLogin &&  <Form.Group className="mb-3">
-                            <Form.Control size="lg" type="password" placeholder="Password" name="password" onChange={updatePasswordInput}  ></Form.Control>
+                            <Form.Control size="lg" type="password" placeholder="Password" name="password" value={Confirm} onChange={updatePasswordInput}  ></Form.Control>
                         </Form.Group>}
                           {!isLogin && <Card.Body className="mt-3">
                     <p style={{backgroundColor:"pink",textAlign:"center",padding:"10px"}}><span style={{cursor:"pointer",color:"blue"}} onClick={Forgot}> Forgot password ?</span></p>
                   
                 </Card.Body>}
-                 {/* <div> {!isLogin && <NavLink 
-           style={{textDecoration:"none" ,color:'brown'}}   to="/Forgot"  > Forgot password?  </NavLink> }
-          </div> */}
+                
                         <Form.Group className="mb-1">
                         <Container  style={{textAlign:"center"}}>
                          <Button  size='lg' variant="success"  type="submit"  style={{borderRadius:"40px",cursor:"pointer"}} onClick={Submit} disabled={!formIsValid}>{isLogin?'Signup':'Login'}</Button>

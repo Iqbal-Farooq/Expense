@@ -1,15 +1,16 @@
-import { useRef,useContext,useEffect,useState} from "react";
-import { AuthContext, } from "../AUth/AuthContext";
+import { useRef,useEffect,useState} from "react";
+
 import { useNavigate } from "react-router-dom";
 import { Container, Navbar } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import LOgout from "../Singup/Logout";
 
 const Profile=()=>{
     const [Profile,SetProfile]=useState(null);
      const [Photourl,SetPhotoUrl]=useState(null);
       const NameRef=useRef();
     const UrlRef=useRef();
-    // const ctx=useContext(AuthContext);
+   
     const tokenid=useSelector(state=>state.auth.token);
     console.log("Inside profile",tokenid);
     const history=useNavigate();
@@ -77,17 +78,30 @@ const Profile=()=>{
                     return res.json().then(data=>{console.log(data)
                     alert(data.error.message)})
                 }
-            }).then(data=>console.log(data),alert("SUCCESS")).catch(err=>console.log(err));
+            }).then(data=>console.log(data),alert("SUCCESS"),NameRef.current.value='' ,UrlRef.current.value=''
+            ).catch(err=>console.log(err));
 
     }
     
 
 
     return (<>
-        <Navbar>
-          {<p>Winners Never Quit,Quitters Never Win </p>}
-    {<p className="top1"> Your profile is 64% completes. A complete Profile has Higher chances
-          of landing a job.</p>} </Navbar>
+     <Navbar bg="dark" variant="dark">
+        <Container className="nav">
+      
+           <li style={{color:"white"}}>Winners Never Quit,Quitters Never Win </li>
+           
+            <li> <LOgout /></li>
+            <li style={{color:"white"}}> {<p className="top1"> Your profile is 64% completes. A complete Profile has Higher chances
+          of landing a job.</p>}</li>
+          
+        
+          
+        </Container>
+      </Navbar>
+
+
+      
             <hr />
 
              { <div  > 
